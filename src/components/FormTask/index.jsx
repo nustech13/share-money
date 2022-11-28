@@ -10,7 +10,7 @@ export const initField = (id) => {
   }
 }
 
-const FormPropsTextFields = ({ session, updateSessionList, indexItem }) => {
+const FormPropsTextFields = ({ session, updateSessionList, indexItem, DeleteSession }) => {
   const [state, setState] = useState(session)
   const { fields } = state
 
@@ -65,7 +65,8 @@ const FormPropsTextFields = ({ session, updateSessionList, indexItem }) => {
         ))}
       </div>
       <Button onClick={() => updateSessionList(indexItem, state)} variant="contained" style={{ marginRight: '10px' }}>Update</Button>
-      <Button onClick={addField} variant="contained">Add Field</Button>
+      <Button onClick={addField} variant="contained" style={{ marginRight: '10px' }} color='success'>Add Field</Button>
+      <Button onClick={() => DeleteSession(state.id)} variant="contained" color='error'>Delete</Button>
     </Box>
   );
 }
