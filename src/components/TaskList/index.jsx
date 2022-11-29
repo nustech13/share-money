@@ -43,7 +43,7 @@ const SimpleAccordion = () => {
     let a = [...state]
     a[index] = { ...sessionItem, isUpdate: true }
     setState(a)
-    localStorage.setItem('list', JSON.stringify(state))
+    localStorage.setItem('list', JSON.stringify(a))
   }
 
   const DeleteSession = (id) => {
