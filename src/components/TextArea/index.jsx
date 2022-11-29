@@ -1,17 +1,9 @@
 import React from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 
-const dcm = `
-Lorem ipsum dolor sit amet consectetur 
-adipisicing elit. Possimus dolorum nobis, ipsa dicta temporibus 
-consequuntur, quod officiis officia hic alias quasi! Est, quasi dicta eveniet do
-loremque iusto voluptatibus minima distinctio.
-
-Thuan be de
-`
-const TextArea = () => {
+const TextArea = ({ value }) => {
   return (
-    <TextareaAutosize  defaultValue={dcm}/>
+    <div style={{ display: 'flex', justifyContent: 'center' }}><TextareaAutosize disabled={true} style={{ width: '800px' }} value={value} /></div>
 
   )
 }

@@ -32,8 +32,17 @@ const AccordionItem = ({ title, session, updateSessionList, indexItem, DeleteSes
 )
 
 
-const SimpleAccordion = () => {
+const SimpleAccordion = ({ updateText }) => {
   const [state, setState] = React.useState([])
+
+  useEffect(() => {
+    if (localStorage.getItem('list')) {
+      setState(JSON.parse(localStorage.getItem('list')))
+      updateTextArea(JSON.parse(localStorage.getItem('list')))
+    } else {
+      setState([initSession(1)])
+    }
+  }, [])
 
   const addSession = () => {
     setState([...state, initSession(state.length + 1)])
@@ -44,31 +53,37 @@ const SimpleAccordion = () => {
     a[index] = { ...sessionItem, isUpdate: true }
     setState(a)
     localStorage.setItem('list', JSON.stringify(a))
+    updateTextArea(a)
   }
 
   const DeleteSession = (id) => {
-    setState(state.filter(item => item.id !== id))
-    localStorage.setItem('list', JSON.stringify(state.filter(item => item.id !== id)))
+    const a = state.filter(item => item.id !== id)
+    setState(a)
+    localStorage.setItem('list', JSON.stringify(a))
+    updateTextArea(a)
+  }
+
+  const updateTextArea = (crr) => {
+    const report = crr.map(item => {
+      const fields = item.fields.filter(field => field.value)
+      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n${!Boolean(fields.length) ? '' : fields.map(field => {
+        return `  + ${field.value}\n`
+      }).join('')}`
+    }).join('')
+
+    updateText(report)
   }
 
   const renderReport = () => {
     const report = state.map(item => {
       const fields = item.fields.filter(field => field.value)
-      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n${fields.length && fields.map(field => {
+      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n${!Boolean(fields.length) ? '' : fields.map(field => {
         return `  + ${field.value}\n`
       }).join('')}`
     }).join('')
     localStorage.setItem('list', JSON.stringify(state))
     return navigator.clipboard.writeText(report)
   }
-
-  useEffect(() => {
-    if (localStorage.getItem('list')) {
-      setState(JSON.parse(localStorage.getItem('list')))
-    } else {
-      setState([initSession(1)])
-    }
-  }, [])
 
   return (
     <div className='tasklist'>
