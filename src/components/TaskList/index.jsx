@@ -48,6 +48,7 @@ const SimpleAccordion = () => {
 
   const DeleteSession = (id) => {
     setState(state.filter(item => item.id !== id))
+    localStorage.setItem('list', JSON.stringify(state.filter(item => item.id !== id)))
   }
 
   const renderReport = () => {
