@@ -8,6 +8,9 @@ import FormTask from '../FormTask'
 import './TaskList.css'
 import { Button } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { toast } from 'react-toastify';
+
+
 const initSession = (id) => ({
   id: id,
   title: '',
@@ -45,7 +48,10 @@ const SimpleAccordion = ({ updateText }) => {
   }, [])
 
   const addSession = () => {
-    setState([...state, initSession(state.length + 1)])
+    const a = [...state, initSession(state.length + 1)]
+    setState(a)
+    localStorage.setItem('list', JSON.stringify(a))
+    toast.success("Create Session Success!");
   }
 
   const updateSessionList = (index, sessionItem) => {
@@ -54,6 +60,7 @@ const SimpleAccordion = ({ updateText }) => {
     setState(a)
     localStorage.setItem('list', JSON.stringify(a))
     updateTextArea(a)
+    toast.success("Update Session Success!");
   }
 
   const DeleteSession = (id) => {
@@ -61,6 +68,7 @@ const SimpleAccordion = ({ updateText }) => {
     setState(a)
     localStorage.setItem('list', JSON.stringify(a))
     updateTextArea(a)
+    toast.success("Delete Session Success!");
   }
 
   const updateTextArea = (crr) => {
@@ -82,6 +90,7 @@ const SimpleAccordion = ({ updateText }) => {
       }).join('')}`
     }).join('')
     localStorage.setItem('list', JSON.stringify(state))
+    toast.info("Copy Report Success!");
     return navigator.clipboard.writeText(report)
   }
 
