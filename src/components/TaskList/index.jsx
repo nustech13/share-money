@@ -35,7 +35,7 @@ const AccordionItem = ({ title, session, updateSessionList, indexItem, DeleteSes
 )
 
 
-const SimpleAccordion = ({ updateText }) => {
+const SimpleAccordion = ({ updateText, openHandler }) => {
   const [state, setState] = React.useState([])
 
   useEffect(() => {
@@ -99,7 +99,8 @@ const SimpleAccordion = ({ updateText }) => {
       <div className='listItem'>
         <div>
           <Button onClick={addSession} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='success'>Add Session</Button>
-          <Button onClick={renderReport} style={{ marginBottom: '20px' }} variant="contained" color='warning'>Copy</Button>
+          <Button onClick={renderReport} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='warning'>Copy</Button>
+          <Button onClick={openHandler} style={{ marginBottom: '20px' }} variant="contained" color='info'>Example</Button>
         </div>
         {state.map((item, index) =>
           <AccordionItem
