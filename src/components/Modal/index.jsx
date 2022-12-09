@@ -6,7 +6,8 @@ const state = {
     id: 0,
     title: '[Code] 10778 - Update CSS, Text, Image For Brighteon TV',
     link: 'https://app.shortcut.com/webseed-inc/story/10778/update-css-text-image-for-brighteon-tv',
-    fields: ['6 hours', 'Local, PR', 'Feature: Place the error message under the field popup, update (new text, image, css),...'],
+    hours: '6',
+    fields: ['Local, PR', 'Feature: Place the error message under the field popup, update (new text, image, css),...'],
     isUpdate: true
 }
 const style = {
@@ -44,6 +45,11 @@ const ModalSession = ({ open, openHandler }) => {
                         fullWidth
                         label="Link"
                         value={state.link || ''}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Time"
+                        value={state.hours || ''}
                     />
                     {Boolean(state.fields.length) && state.fields.map((item, index) => (
                         <div key={item.id}>

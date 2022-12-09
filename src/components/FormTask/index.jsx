@@ -51,6 +51,14 @@ const FormPropsTextFields = ({ session, updateSessionList, indexItem, DeleteSess
             setState(crr => ({ ...crr, link: e.target.value }))
           }}
         />
+        <TextField
+          fullWidth
+          label="Time"
+          value={state.hours || ''}
+          onChange={(e) => {
+            setState(crr => ({ ...crr, hours: e.target.value }))
+          }}
+        />
         {Boolean(fields.length) && fields.map((item, index) => (
           <div key={item.id}>
             <div style={{ margin: '15px 0' }}>

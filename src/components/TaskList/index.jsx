@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FormTask from '../FormTask'
 import './TaskList.css'
-import { Button } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { toast } from 'react-toastify';
 
@@ -15,6 +15,7 @@ const initSession = (id) => ({
   id: id,
   title: '',
   link: '',
+  hours: '',
   fields: [],
   isUpdate: false
 })
@@ -34,9 +35,11 @@ const AccordionItem = ({ title, session, updateSessionList, indexItem, DeleteSes
   </Accordion>
 )
 
+const ownerData = ['ThuanNM', 'DucNNB', 'VuPTM']
 
 const SimpleAccordion = ({ updateText, openHandler }) => {
   const [state, setState] = React.useState([])
+  const [owner, setOwner] = React.useState(0)
 
   useEffect(() => {
     if (localStorage.getItem('list')) {
@@ -74,7 +77,7 @@ const SimpleAccordion = ({ updateText, openHandler }) => {
   const updateTextArea = (crr) => {
     const report = crr.map(item => {
       const fields = item.fields.filter(field => field.value)
-      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n${!Boolean(fields.length) ? '' : fields.map(field => {
+      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n  + ${item.hours} hours\n${!Boolean(fields.length) ? '' : fields.map(field => {
         return `  + ${field.value}\n`
       }).join('')}`
     }).join('')
@@ -85,7 +88,7 @@ const SimpleAccordion = ({ updateText, openHandler }) => {
   const renderReport = () => {
     const report = state.map(item => {
       const fields = item.fields.filter(field => field.value)
-      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n${!Boolean(fields.length) ? '' : fields.map(field => {
+      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n  + ${item.hours} hours\n${!Boolean(fields.length) ? '' : fields.map(field => {
         return `  + ${field.value}\n`
       }).join('')}`
     }).join('')
@@ -94,13 +97,23 @@ const SimpleAccordion = ({ updateText, openHandler }) => {
     return navigator.clipboard.writeText(report)
   }
 
+  const ownerHandler = () => {
+    switch (owner) {
+      case 0: return setOwner(1)
+      case 1: return setOwner(2)
+      case 2: return setOwner(0)
+      default:
+        return setOwner(0)
+    }
+  }
+
   return (
     <div className='tasklist'>
       <div className='listItem'>
         <div>
           <Button onClick={addSession} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='success'>Add Session</Button>
           <Button onClick={renderReport} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='warning'>Copy</Button>
-          <Button onClick={openHandler} style={{ marginBottom: '20px' }} variant="contained" color='info'>Example</Button>
+          <Button onClick={openHandler} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='info'>Example</Button>
         </div>
         {state.map((item, index) =>
           <AccordionItem
@@ -111,6 +124,37 @@ const SimpleAccordion = ({ updateText, openHandler }) => {
             DeleteSession={DeleteSession}
             indexItem={index}
           />)}
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Description</TableCell>
+                <TableCell align="right">Reference</TableCell>
+                <TableCell align="right">ID</TableCell>
+                <TableCell align="right">Status</TableCell>
+                <TableCell onClick={ownerHandler} style={{ cursor: 'pointer', fontWeight: '600' }} align="right">Owner</TableCell>
+                <TableCell align="right">Actual</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Boolean(state.length) && state.map((row) => (
+                <TableRow
+                  key={row.title}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.title}
+                  </TableCell>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right">Dev Done</TableCell>
+                  <TableCell align="right">{ownerData[owner]}</TableCell>
+                  <TableCell align="right">{row.hours}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   );
