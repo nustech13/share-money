@@ -41,6 +41,17 @@ const SimpleAccordion = ({ updateText, openHandler }) => {
   const [state, setState] = React.useState([])
   const [owner, setOwner] = React.useState(0)
 
+  const updateTextArea = (crr) => {
+    const report = crr.map(item => {
+      const fields = item.fields.filter(field => field.value)
+      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n  + ${item.hours} hours\n${!Boolean(fields.length) ? '' : fields.map(field => {
+        return `  + ${field.value}\n`
+      }).join('')}`
+    }).join('')
+
+    updateText(report)
+  }
+
   useEffect(() => {
     if (localStorage.getItem('list')) {
       setState(JSON.parse(localStorage.getItem('list')))
@@ -74,17 +85,6 @@ const SimpleAccordion = ({ updateText, openHandler }) => {
     toast.success("Delete Session Success!");
   }
 
-  const updateTextArea = (crr) => {
-    const report = crr.map(item => {
-      const fields = item.fields.filter(field => field.value)
-      return `- ${item.title} ${item.link ? `(${item.link})` : ''}\n  + ${item.hours} hours\n${!Boolean(fields.length) ? '' : fields.map(field => {
-        return `  + ${field.value}\n`
-      }).join('')}`
-    }).join('')
-
-    updateText(report)
-  }
-
   const renderReport = () => {
     const report = state.map(item => {
       const fields = item.fields.filter(field => field.value)
@@ -107,14 +107,23 @@ const SimpleAccordion = ({ updateText, openHandler }) => {
     }
   }
 
+  const deleteAll = () => {
+    const removeArr = [initSession(1)]
+    setState(removeArr)
+    updateTextArea(removeArr)
+    localStorage.setItem('list', JSON.stringify(removeArr))
+  }
+
   return (
     <div className='tasklist'>
       <div className='listItem'>
-        <div>
+        <div  style={{ position: 'fixed', zIndex: '999999' }}>
           <Button onClick={addSession} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='success'>Add Session</Button>
           <Button onClick={renderReport} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='warning'>Copy</Button>
           <Button onClick={openHandler} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='info'>Example</Button>
+          <Button onClick={deleteAll} style={{ marginBottom: '20px', marginRight: '10px' }} variant="contained" color='error'>Delete All</Button>
         </div>
+        <div style={{height: '50px'}}></div>
         {state.map((item, index) =>
           <AccordionItem
             key={item.id}
