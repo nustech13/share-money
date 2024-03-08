@@ -4,7 +4,7 @@ import './Card.css'
 const Card = ({ item, handleDelete, index, setIndexItemHandler }) => {
     return (
         <div className="Card">
-            {item.status.trim().toLowerCase() === 'done' && <div className='CardDone'></div>}
+            {item.status?.trim()?.toLowerCase() === 'done' && <div className='CardDone'></div>}
             <div className='CardHeader'>
                 <div>Date: { item.createdAt }</div>
                 <div>Status: { item.status }</div>

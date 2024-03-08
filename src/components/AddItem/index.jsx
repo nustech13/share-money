@@ -98,6 +98,12 @@ const AddItem = ({ handleSubmit, open, setOpen, indexItem, handleEdit }) => {
                     <input type="text" value={item.createdAt || ''} onChange={(e) => setItem(crrState => ({...crrState, createdAt: e.target.value}))}/>
                 </div>
             </div>
+            <div className='AddItemField'>
+                <div className='Title'>Status:</div>
+                <div>
+                    <input type="checkbox" checked={item.status?.trim()?.toLowerCase() === 'done'} onChange={(e) => setItem(crrState => ({...crrState, status: item.status?.trim()?.toLowerCase() === 'done' ? 'In Progress' : 'Done'}))}/>
+                </div>
+            </div>
             <div className='AddButtons'>
                 <button className='Cancel' onClick={setOpen}>Cancel</button>
                 <button onClick={addItemHandler}>Save</button>
